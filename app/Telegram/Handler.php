@@ -10,19 +10,19 @@ use Illuminate\Support\Stringable;
 
 class Handler extends WebhookHandler
 {
-    public function hello(): void
+    public function hello()
     {
         $this->reply('salem bul menin birinshi laravelde islegen telegram bot');
     }
 
-    public function help(): void
+    public function help()
     {
         $this->reply('Bul botta siz ozinizge kerekli bolgan sabaqliqlardi tawsaniz boladi');
     }
 
     public function actions(): void
     {
-        Telegraph::message('Birewin saylan')
+        $this->chat->message('Birewin saylan')
             ->keyboard(Keyboard::make()->buttons([
                 Button::make('Saytqa otiw')->url('backenddev.uz'),
                 Button::make('Layk basin')->action('like'),

@@ -25,5 +25,6 @@ Artisan::command('tester', function () {
     dd($bot->registerCommands([
         'hello' => 'Salem dep aytiw',
         'help' => 'Bul bot ne isleydi',
+        'actions' => 'buriqlar',
     ])->send());
 });
