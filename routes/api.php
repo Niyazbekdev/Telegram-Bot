@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CourseController;
 use App\Http\Controllers\StatusController;
 use App\Http\Controllers\TelegramBotController;
 use Illuminate\Http\Request;
@@ -11,4 +12,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::apiResource('/telegram-bot', TelegramBotController::class);
 Route::apiResource('/statuses', StatusController::class);
+Route::apiResource('/courses', CourseController::class);
 
