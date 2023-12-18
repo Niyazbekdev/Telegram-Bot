@@ -23,8 +23,6 @@ Artisan::command('tester', function () {
     $bot = \DefStudio\Telegraph\Models\TelegraphBot::find(1);
 
     dd($bot->registerCommands([
-        'hello' => 'Salem dep aytiw',
-        'help' => 'Bul bot ne isleydi',
-        'actions' => 'buriqlar',
+        'start' => 'Botimizga xosh keldiniz'
     ])->send());
 });

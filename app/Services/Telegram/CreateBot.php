@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Telegram;
 
+use App\Services\BaseServices;
 use DefStudio\Telegraph\Models\TelegraphBot;
 use Illuminate\Validation\ValidationException;
 

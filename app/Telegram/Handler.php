@@ -2,40 +2,84 @@
 
 namespace App\Telegram;
 
-use DefStudio\Telegraph\Facades\Telegraph;
+use App\Enums\Telegram\Page;
 use DefStudio\Telegraph\Handlers\WebhookHandler;
-use DefStudio\Telegraph\Keyboard\Button;
-use DefStudio\Telegraph\Keyboard\Keyboard;
+use DefStudio\Telegraph\Keyboard\ReplyButton;
+use DefStudio\Telegraph\Keyboard\ReplyKeyboard;
 use Illuminate\Support\Stringable;
 
 class Handler extends WebhookHandler
 {
-    public function hello()
+    public function start(): void
     {
-        $this->reply('salem bul menin birinshi laravelde islegen telegram bot');
+        if ($this->chat->phone == null) {
+            $this->requestPhoneNumberPage();
+        } else {
+            $this->mainPage();
+        }
     }
 
-    public function help()
+    public function handleChatMessage(Stringable $text): void
     {
-        $this->reply('Bul botta siz ozinizge kerekli bolgan sabaqliqlardi tawsaniz boladi');
+        match ($this->chat->page) {
+            Page::main->value => $this->main($text),
+            Page::request_phone->value => $this->updatePhoneNumber()
+        };
     }
 
-    public function actions(): void
+    public function main(Stringable $text): void
     {
-        $this->chat->message('Birewin saylan')
-            ->keyboard(Keyboard::make()->buttons([
-                Button::make('Saytqa otiw')->url('backenddev.uz'),
-                Button::make('Layk basin')->action('like'),
-                Button::make('Tirkelip ketin')->action('subscribe')
+        match ($text) {
+            default => $this->mainPage()
+        };
+    }
+
+    public function mainPage(): void
+    {
+        $this->chat->message('Bas menyu')
+            ->replyKeyboard(ReplyKeyboard::make()->buttons([
+                ReplyButton::make('foo')->requestPoll(),
+                ReplyButton::make('bar')->requestQuiz(),
+                ReplyButton::make('baz')->webApp('https://webapp.dev'),
+            ]))->send();
+        $this->setPage(Page::request_phone->value);
+    }
+
+    private function updatePhoneNumber(): void
+    {
+        if (! empty($this->message->contact())) {
+            $contactUserId = $this->message->contact()->userId();
+            $senderId = $this->message->from()->id();
+
+            if ($contactUserId == $senderId) {
+                $phone = preg_replace('/[^0-9]/', '', $this->message->contact()->phoneNumber());
+
+                $this->chat->update([
+                    'phone' => '+' . $phone,
+                ]);
+
+                $this->setPage(Page::main->value);
+                $this->mainPage();
+            } else {
+                $this->requestPhoneNumberPage();
+            }
+        } else {
+            $this->requestPhoneNumberPage();
+        }
+    }
+
+    private function requestPhoneNumberPage(): void
+    {
+        $this->setPage(Page::request_phone->value);
+
+        $this->chat->message('Telefon nomerinizdi jiberin')
+            ->replyKeyboard(ReplyKeyboard::make()->buttons([
+                ReplyButton::make('Send phone number')->requestContact(),
             ]))->send();
     }
 
-    protected function handleUnknownCommand(Stringable $text): void
+    private function setPage(int $page): void
     {
-        if ($text->value() === '/start'){
-            $this->reply('Assalawma aleykum botimizda kelgeniniz ushin quwanishliman');
-        } else {
-            $this->reply('Belgisiz komanda');
-        }
+        $this->chat->update(['page' => $page]);
     }
 }
