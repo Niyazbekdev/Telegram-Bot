@@ -125,11 +125,6 @@ class Handler extends WebhookHandler
         $this->mainPage('Bas menu');
     }
 
-    public function replyToTheMessage(string $message)
-    {
-        $this->reply($message);
-    }
-
     private function setPage(int $page): void
     {
         $this->chat->update(['page' => $page]);
