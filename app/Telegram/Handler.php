@@ -25,7 +25,8 @@ class Handler extends WebhookHandler
         match ($this->chat->page) {
             Page::main->value => $this->main($text),
             Page::request_phone->value => $this->updatePhoneNumber(),
-            Page::sen_message->value => $this->inputMessage($text)
+            Page::sen_message->value => $this->inputMessage($text),
+            default => $this->main($text),
         };
     }
 
