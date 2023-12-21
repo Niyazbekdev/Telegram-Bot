@@ -16,4 +16,8 @@ class TelegraphChat extends BaseModel
         'telegraph_bot_id',
         'page',
     ];
+
+    protected $casts = [
+        'page' => 'integer',
+    ];
 }
