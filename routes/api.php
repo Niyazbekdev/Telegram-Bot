@@ -18,5 +18,5 @@ Route::apiResource('/statuses', StatusController::class);
 Route::apiResource('/courses', CourseController::class);
 Route::apiResource('/source-types', SourceTypeController::class);
 Route::apiResource('/sources', SourceController::class);
-Route::apiResource('messages', MessageController::class);
+Route::apiResource('/messages', MessageController::class);
 
