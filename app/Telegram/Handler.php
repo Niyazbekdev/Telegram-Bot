@@ -36,6 +36,7 @@ class Handler extends WebhookHandler
             'biz haqqimizda' => $this->aboutPage(),
             'xabar jiberiw' => $this->sendMessage(),
             'arqaga qaytiw' => $this->backToMenu(),
+            'Telegram kanal' => $this->telegramChannel(),
             default => $this->mainPage('qate buyriq'),
         };
     }
@@ -116,14 +117,20 @@ class Handler extends WebhookHandler
                 'text' => $text,
             ]);
             $this->mainPage('Sizge tez arada juwap qaytaramiz');
+        } else {
+            $this->backToMenu();
         }
-        $this->backToMenu();
     }
 
     public function backToMenu():void
     {
         $this->setPage(Page::main->value);
         $this->mainPage('Bas menu');
+    }
+
+    public function telegramChannel(): void
+    {
+        $this->chat->message('');
     }
 
     private function setPage(int $page): void

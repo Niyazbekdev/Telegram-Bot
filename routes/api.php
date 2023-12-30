@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\MessageController;
 use App\Http\Controllers\SourceController;
 use App\Http\Controllers\SourceTypeController;
 use App\Http\Controllers\StatusController;
@@ -17,4 +18,5 @@ Route::apiResource('/statuses', StatusController::class);
 Route::apiResource('/courses', CourseController::class);
 Route::apiResource('/source-types', SourceTypeController::class);
 Route::apiResource('/sources', SourceController::class);
+Route::apiResource('messages', MessageController::class);
 

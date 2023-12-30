@@ -4,7 +4,6 @@ namespace App\Services\Telegram;
 use App\Models\Message;
 use App\Models\TelegraphChat;
 use App\Services\BaseServices;
-use App\Telegram\Handler;
 use Illuminate\Validation\ValidationException;
 
 class ReplyToTheMessage extends BaseServices
@@ -20,7 +19,7 @@ class ReplyToTheMessage extends BaseServices
     /**
      * @throws ValidationException
      */
-    public function execute($data, Handler $handler): bool
+    public function execute($data): bool
     {
         $this->validate($data);
 
@@ -28,6 +27,7 @@ class ReplyToTheMessage extends BaseServices
         $chat->message($data['text'])->send();
 
         Message::create([
+            'telegraph_chat_id' => $data['chat_id'],
             'text' => $data['text'],
             'is_answered' => true,
         ]);

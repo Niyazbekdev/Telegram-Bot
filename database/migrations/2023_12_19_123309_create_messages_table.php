@@ -12,7 +12,6 @@ return new class extends Migration
         Schema::create('messages', function (Blueprint $table) {
             $table->id();
             $table->foreignId('telegraph_chat_id')->constrained();
-            $table->foreignId('telegraph_bot_id')->constrained();
             $table->text('text');
             $table->boolean('is_answered')->default(false);
             $table->timestamps();

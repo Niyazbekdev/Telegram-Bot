@@ -13,6 +13,5 @@ class Message extends Model
         'telegraph_chat_id',
         'telegraph_bot_id',
         'text',
-        'answer',
     ];
 }
